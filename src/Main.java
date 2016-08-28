@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class MainApp {
+public class Main {
 
 	public enum Cor {
 		BRANCO, PRETO, CINZA,
@@ -27,7 +27,6 @@ public class MainApp {
 		}
 
 		public void grafo(Grafo grafo) {
-			//System.out.println(grafo.toString());
 		}
 
 		public void largura(Grafo grafo) {
@@ -53,6 +52,8 @@ public class MainApp {
 		protected void exibir(List<No> nos) {
 			if (nos.isEmpty())
 				return;
+			//Scanner scanner = new Scanner(System.in);
+			//int numero = scanner.nextInt();
 			System.out.println("\nTeste 1");
 			String impressao = new String();
 			for (No no : nos)
