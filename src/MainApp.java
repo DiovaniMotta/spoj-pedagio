@@ -64,9 +64,6 @@ public class MainApp {
 
 	public static class No implements Serializable {
 
-		/**
-	 * 
-	 */
 		private static final long serialVersionUID = 8258978753880813209L;
 		private Integer pai;
 		private Integer nivel;
@@ -150,26 +147,8 @@ public class MainApp {
 		}
 	}
 
-	/**
-	 * 
-	 * @author Diovani Bernardi da Motta Data: 27/08/2016 Classe que representa
-	 *         o modelo do problema, contém as informações usadas para a
-	 *         modelagem do grafo
-	 * 
-	 *         numeroCidade(C) indica número de cidades(vértices) contidos no
-	 *         grafos numeroEstradas(E) indica o numero de estradas (arestas)
-	 *         contidas no grafo cidadeAtual(L) indica a cidade de
-	 *         partida(vértice de origem) da familia de juca numeroPedagio (P)
-	 *         indica o número de pedágios (níveis de busca) que a familia
-	 *         pretende pagar
-	 *
-	 */
-
 	public static class Grafo implements Serializable {
 
-		/**
-	 * 
-	 */
 		private static final long serialVersionUID = -7173028636254893655L;
 		private int numeroCidade;
 		private int numeroEstradas;
@@ -277,18 +256,8 @@ public class MainApp {
 					cidadeAtual, numeroPedagio);
 		}
 	}
-
-	/**
-	 * 
-	 * @author Diovani Bernardi da Motta Data: 27/08/2016 Classe que tem a
-	 *         responsabilidade de implementar o model usado para representar as
-	 *         arestas(também chamadas de estradas) que ligam uma cidade a outra
-	 */
 	public static class Aresta implements Serializable {
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 3692215515698831975L;
 		private int cidadeX;
 		private int cidadeY;
@@ -460,7 +429,6 @@ public class MainApp {
 	}
 
 	public static void main(String[] args) {
-		// representação dos valores de entrada do exemplo 1
 		GrafoAbstractFactory grafoAbstractFactory1 = new GrafoAbstractFactory();
 		Scanner scanner = new Scanner(System.in);
 		int c = scanner.nextInt();
@@ -473,8 +441,7 @@ public class MainApp {
 		grafoAbstractFactory1.grafo(grafo);
 		List<Aresta> arestas = grafoAbstractFactory1.getArestas();
 		grafo.setArestas(arestas);
-		//grafoAbstractFactory1.print(arestas);
-		// representa as saidas referente ao exemplo 1
+		grafoAbstractFactory1.print(arestas);
 		grafoAbstractFactory1.largura(grafo);
 	}
 }
