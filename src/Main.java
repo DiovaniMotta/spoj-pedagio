@@ -1,97 +1,88 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
+class Main {
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        Main processando = new Main();
+        processando.processa();
+       
+        System.exit(0);
+    }
+    
+    int[] busca(int[][] mapa, int pontoPartidaL, int numVertices) {
+        int[] vetorVisitados = new int[numVertices];
+                
+        for (int i = 0; i < numVertices; i++) {
+            vetorVisitados[i] = 0;
+        }
+        
+        ArrayList<Integer> filaVisitados = new ArrayList<Integer>();
+        filaVisitados.add(pontoPartidaL);
+        
+        int verticeAtual = 0;
+        
+        int inicioFila = 0;
+        while (filaVisitados.size() != inicioFila) {
+            verticeAtual = filaVisitados.get(inicioFila);
+            
+            for (int tentar = 0; tentar < numVertices; tentar++) {
+                if (vetorVisitados[tentar] == 0 && mapa[verticeAtual][tentar] == 1) {
+                    vetorVisitados[tentar] = vetorVisitados[verticeAtual]+1;
+                    filaVisitados.add(tentar);
+                }
+            }
+            inicioFila++;
+        }    
+        
+        return vetorVisitados;
+    }
+   
+    void processa() throws NumberFormatException, IOException {
+        String line = "";
+        
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-public class Main {
-
-	private static class Grafo {
-
-		public int c;
-		public int e;
-		public int l;
-		public int p;
-		public int[][] arestas;
-
-	}
-
-	public static void main(String[] args) {
-		input();
-		System.exit(0);
-	}
-
-	private static void input() {
-		try {
-			String line = "";
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					System.in));
-			Grafo grafo = new Grafo();
-			while ((line = br.readLine()) != null) {
-				StringTokenizer tokenizer = new StringTokenizer(line);
-				grafo.c = Integer.parseInt(tokenizer.nextToken());
-				grafo.e = Integer.parseInt(tokenizer.nextToken());
-				grafo.l = Integer.parseInt(tokenizer.nextToken());
-				grafo.p = Integer.parseInt(tokenizer.nextToken());
-				if (grafo.c == 0 && grafo.e == 0 && grafo.l == 0
-						&& grafo.p == 0)
-					return;
-				grafo.arestas = new int[grafo.c][grafo.c];
-				for (int i = 0; i < grafo.e; i++) {
-					line = br.readLine();
-					tokenizer = new StringTokenizer(line);
-					int x = Integer.parseInt(tokenizer.nextToken());
-					int y = Integer.parseInt(tokenizer.nextToken());
-					grafo.arestas[x - 1][y - 1] = 1;
-					grafo.arestas[y - 1][x - 1] = 1;
-				}
-				process(grafo);
-			}
-		} catch (Exception exception) {
-			return;
-		}
-	}
-
-
-	private static int[] find(Grafo grafo) {
-		int[] vetorVisitados = new int[grafo.c];
-		for (int i = 0; i < grafo.c; i++)
-			vetorVisitados[i] = 0;
-		ArrayList<Integer> filaVisitados = new ArrayList<Integer>();
-		filaVisitados.add((grafo.l - 1));
-		int verticeAtual = 0;
-		int inicioFila = 0;
-		while (filaVisitados.size() != inicioFila) {
-			verticeAtual = filaVisitados.get(inicioFila);
-			for (int tentar = 0; tentar < grafo.c; tentar++) {
-				if (vetorVisitados[tentar] == 0
-						&& grafo.arestas[verticeAtual][tentar] == 1) {
-					vetorVisitados[tentar] = vetorVisitados[verticeAtual] + 1;
-					filaVisitados.add(tentar);
-				}
-			}
-			inicioFila++;
-		}
-		return vetorVisitados;
-	}
-
-	
-	private static void process(Grafo grafo) {
-		int[] vetorVisitados = find(grafo);
-		int caso = 0;
-		caso++;
-		System.out.println("Teste " + caso);
-		boolean jaImprimi = false;
-		for (int i = 0; i < grafo.c; i++) {
-			if (vetorVisitados[i] != 0 && i != (grafo.l - 1)
-					&& vetorVisitados[i] <= grafo.p) {
-				if (jaImprimi)
-					System.out.print(" ");
-				System.out.print(i + 1);
-				jaImprimi = true;
-			}
-		}
-		System.out.println("\n");
-		return;
-	}
+        int caso = 0;
+        while ((line = br.readLine()) != null) {
+            StringTokenizer tokenizer = new StringTokenizer(line);
+            int qteCidades = Integer.parseInt(tokenizer.nextToken());
+            int qteEstradas = Integer.parseInt(tokenizer.nextToken());
+            int cidadePartida = Integer.parseInt(tokenizer.nextToken());
+            int maxPedagio = Integer.parseInt(tokenizer.nextToken());
+            
+            if (qteCidades == 0 && qteEstradas == 0 && cidadePartida == 0 && maxPedagio == 0) {
+                return;
+            }
+            
+            int[][] matriz = new int[qteCidades][qteCidades];
+            
+            for (int i = 0; i < qteEstradas; i++) {
+                line = br.readLine();
+                tokenizer = new StringTokenizer(line);
+                int a = Integer.parseInt(tokenizer.nextToken());
+                int b = Integer.parseInt(tokenizer.nextToken());
+                
+                matriz[a-1][b-1] = 1;
+                matriz[b-1][a-1] = 1;
+            }
+           
+            int[] vetorVisitados = busca(matriz, cidadePartida-1, qteCidades);
+            
+            caso++;
+            System.out.println("Teste " + caso);
+            boolean jaImprimi = false;
+            for (int i = 0; i < qteCidades; i++) {
+                if (vetorVisitados[i] != 0 && i != cidadePartida-1 && vetorVisitados[i] <= maxPedagio) {
+                    if (jaImprimi) {
+                        System.out.print(" ");    
+                    }
+                    System.out.print(i+1);
+                    jaImprimi = true;
+                }
+            }
+            System.out.println("\n");
+        }
+                               
+        return;
+    }
 }
