@@ -3,23 +3,44 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+/**
+ * 
+ * @author Diovani Bernardi da Motta Data: 30/08/2016 Implementacao do problema
+ *         SPOJ - 819 Pedagio
+ */
 public class Main {
 
+	/**
+	 * 
+	 * @author Diovani Bernardi da Motta Classe que representa o dominio do
+	 *         problema
+	 */
 	private static class Grafo {
 
-		public int c;
-		public int e;
-		public int l;
-		public int p;
-		public int[][] arestas;
+		public int c; // numero de cidade
+		public int e; // numero de estrada
+		public int l; // ponto de partida
+		public int p; // numero de pedagio
+		public int[][] arestas; // identifica os pontos(estradas) entre uma
+								// cidade e outra
 
 	}
 
+	/**
+	 * Inicio do programa
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		input();
 		System.exit(0);
 	}
 
+	/**
+	 * Responsavel por capturar as entradas fornecidas no console, instanciar um
+	 * objeto Grafo, que contém os dados da definicao do problema e invocar as
+	 * rotinas de processamento e busca
+	 */
 	private static void input() {
 		try {
 			String line = "";
@@ -52,21 +73,26 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Responsavel por efetuar a busca das cidades que sera visitadas.Implementacao do algoritmo de busca em largura
+	 * @param grafo o objeto contendo as definicoes lidas na tela de entrada(console)
+	 * @return um array contendo as cidades que poderam ser visitadas
+	 */
 	private static int[] find(Grafo grafo) {
 		int[] vetorVisitados = new int[grafo.c];
 		for (int i = 0; i < grafo.c; i++)
-			vetorVisitados[i] = 0;
+			vetorVisitados[i] = 0; // inicializa todas as posicoes para zero
 		ArrayList<Integer> filaVisitados = new ArrayList<Integer>();
-		filaVisitados.add((grafo.l - 1));
+		filaVisitados.add((grafo.l - 1)); // adiciona o ponto de inicio da zornada
 		int verticeAtual = 0;
 		int inicioFila = 0;
-		while (filaVisitados.size() != inicioFila) {
-			verticeAtual = filaVisitados.get(inicioFila);
+		while (filaVisitados.size() != inicioFila) { // enquanto o numero de cidades visitadas for diferente do que o inicio da fila
+			verticeAtual = filaVisitados.get(inicioFila); // retorno a primeira cidade visitada
 			for (int tentar = 0; tentar < grafo.c; tentar++) {
-				if (vetorVisitados[tentar] == 0
-						&& grafo.arestas[verticeAtual][tentar] == 1) {
-					vetorVisitados[tentar] = vetorVisitados[verticeAtual] + 1;
-					filaVisitados.add(tentar);
+				if (vetorVisitados[tentar] == 0 // se a cidade ainda nao foi visitada
+						&& grafo.arestas[verticeAtual][tentar] == 1) { 
+					vetorVisitados[tentar] = vetorVisitados[verticeAtual] + 1; // adiciono o pai do vertices
+					filaVisitados.add(tentar); // adiciono a fila de visitados
 				}
 			}
 			inicioFila++;
@@ -74,6 +100,10 @@ public class Main {
 		return vetorVisitados;
 	}
 
+	/**
+	 * Responsavel por invocar as rotinas de busca em largura e imprimir os resultados no console.
+	 * @param grafo o objeto contendo as definicoes lidas na tela de entrada(console)
+	 */
 	private static void process(Grafo grafo) {
 		int[] vetorVisitados = find(grafo);
 		int caso = 0;
