@@ -3,7 +3,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-
 public class Main {
 
 	private static class Grafo {
@@ -48,10 +47,10 @@ public class Main {
 				process(grafo);
 			}
 		} catch (Exception exception) {
+			exception.printStackTrace();
 			return;
 		}
 	}
-
 
 	private static int[] find(Grafo grafo) {
 		int[] vetorVisitados = new int[grafo.c];
@@ -75,7 +74,6 @@ public class Main {
 		return vetorVisitados;
 	}
 
-	
 	private static void process(Grafo grafo) {
 		int[] vetorVisitados = find(grafo);
 		int caso = 0;
