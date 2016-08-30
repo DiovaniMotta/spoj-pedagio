@@ -1,14 +1,10 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Main {
-
-	private static BufferedReader br;
 
 	public enum Cor {
 		BRANCO, PRETO, CINZA,
@@ -37,30 +33,28 @@ public class Main {
 			ProcessarFila processarFila = new ProcessarFila();
 			processarFila.fila(grafo);
 			List<No> nos = processarFila.visitados();
-			exibir(nos, grafo);
+			exibir(nos);
 		}
 
 		public List<Aresta> getArestas() {
 			List<Aresta> arestas = new ArrayList<Aresta>();
-			try {
-				for (int i = 0; i < grafo.getNumeroEstradas(); i++) {
-					String line = br.readLine();
-					StringTokenizer tokenizer = new StringTokenizer(line);
-					int x = Integer.parseInt(tokenizer.nextToken());
-					int y = Integer.parseInt(tokenizer.nextToken());
-					Aresta aresta = new Aresta(x, y);
-					arestas.add(aresta);
-				}
-			} catch (Exception exception) {
-				exception.printStackTrace();
+			for (int i = 0; i < grafo.getNumeroEstradas(); i++) {
+				Scanner scanner = new Scanner(System.in);
+				int x = scanner.nextInt();
+				int y = scanner.nextInt();
+				scanner.nextLine();
+				Aresta aresta = new Aresta(x, y);
+				arestas.add(aresta);
 			}
 			return arestas;
 		}
 
-		protected void exibir(List<No> nos, Grafo grafo) {
+		protected void exibir(List<No> nos) {
 			if (nos.isEmpty())
 				return;
-			System.out.println("\nTeste " + grafo.getNumeroPedagio());
+			//Scanner scanner = new Scanner(System.in);
+			//int numero = scanner.nextInt();
+			System.out.println("\nTeste 1");
 			String impressao = new String();
 			for (No no : nos)
 				impressao += no.toString();
@@ -263,7 +257,6 @@ public class Main {
 					cidadeAtual, numeroPedagio);
 		}
 	}
-
 	public static class Aresta implements Serializable {
 
 		private static final long serialVersionUID = 3692215515698831975L;
@@ -349,7 +342,6 @@ public class Main {
 
 	public static abstract class Fila {
 
-		protected int niveis = 0;
 		protected int noInicial;
 		protected int noFinal;
 		protected List<No> visitados = new ArrayList<No>();
@@ -405,15 +397,13 @@ public class Main {
 					definir(no.getNivel(), numero);
 				}
 			}
-
 			List<No> nosVisitados = visitados
 					.stream()
 					.filter(n -> ((n.getPai() != null) && (n.getPai() == no
 							.getNivel()))).collect(Collectors.toList());
-			niveis++;
-			if (niveis >= noFinal)
+			noInicial++;
+			if (noInicial > noFinal)
 				return;
-
 			for (No n : nosVisitados)
 				enfileirar(n);
 		}
@@ -440,28 +430,19 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		try {
-			GrafoAbstractFactory grafoAbstractFactory1 = new GrafoAbstractFactory();
-			String line = "";
-			br = new BufferedReader(new InputStreamReader(System.in));
-			while ((line = br.readLine()) != null) {
-				StringTokenizer tokenizer = new StringTokenizer(line);
-				int c = Integer.parseInt(tokenizer.nextToken());
-				int e = Integer.parseInt(tokenizer.nextToken());
-				int l = Integer.parseInt(tokenizer.nextToken());
-				int p = Integer.parseInt(tokenizer.nextToken());
-				if (c == 0 && e == 0 && l == 0 && p == 0)
-					return;
-				Grafo grafo = grafoAbstractFactory1.getGrafo(c, e, l, p);
-				grafoAbstractFactory1.grafo(grafo);
-				List<Aresta> arestas = grafoAbstractFactory1.getArestas();
-				grafo.setArestas(arestas);
-				// grafoAbstractFactory1.print(arestas);
-				grafoAbstractFactory1.largura(grafo);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		GrafoAbstractFactory grafoAbstractFactory1 = new GrafoAbstractFactory();
+		Scanner scanner = new Scanner(System.in);
+		int c = scanner.nextInt();
+		int e = scanner.nextInt();
+		int l = scanner.nextInt();
+		int p = scanner.nextInt();
+		scanner.nextLine();
+		
+		Grafo grafo = grafoAbstractFactory1.getGrafo(c, e, l, p);
+		grafoAbstractFactory1.grafo(grafo);
+		List<Aresta> arestas = grafoAbstractFactory1.getArestas();
+		grafo.setArestas(arestas);
+		grafoAbstractFactory1.print(arestas);
+		grafoAbstractFactory1.largura(grafo);
 	}
 }
